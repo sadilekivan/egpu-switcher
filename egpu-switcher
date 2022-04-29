@@ -340,6 +340,13 @@ function setup() {
 	print_success "Done... Setup finished"
 }
 
+function check_restart() {
+	if [ ${restart} = 1 ]; then
+		print_warn "Will restart display-manager..."
+		systemctl restart display-manager.service
+	fi
+}
+
 function switch() {
 
 	declare mode=${1}
@@ -402,12 +409,14 @@ function switch() {
 	if [ ${mode} = "egpu" ]; then
 		print_info "Create symlink ${green}${xfile}${blank} -> ${xfile_egpu}"
 		ln -sf ${xfile_egpu} ${xfile}
+		check_restart
 		return
 	fi
 
 	if [ ${mode} = "internal" ]; then
 		print_info "Create symlink ${green}${xfile}${blank} -> ${xfile_internal}"
 		ln -sf ${xfile_internal} ${xfile}
+		check_restart
 		return
 	fi
 
@@ -517,6 +526,7 @@ if [ $1 = "setup" ]; then
 
 	declare override=0
 	declare noprompt=0
+	declare restart=0
 	if [ $# -gt 1 ]; then
 		for option in "$@"
 		do
@@ -524,6 +534,8 @@ if [ $1 = "setup" ]; then
 				override=1
 			elif [ ${option} = "--noprompt" ]; then
 				noprompt=1
+			elif [ ${option} = "--restart" ]; then
+				restart=1
 			fi
 		done
 	fi
@@ -532,6 +544,7 @@ if [ $1 = "setup" ]; then
 elif [ $1 = "switch" ]; then
 
 	declare override=0
+	declare restart=0
 	if [ $# -lt 2 ]; then
 		print_error "No argument passed to the switch method. Possible options: auto, egpu, internal"
 		exit
@@ -540,6 +553,8 @@ elif [ $1 = "switch" ]; then
 		do
 			if [ ${option} = "--override" ]; then
 				override=1
+			elif [ ${option} = "--restart" ]; then
+				restart=1
 			fi
 		done
 	fi
@@ -575,5 +590,3 @@ elif [ $1 = "remove" ]; then
 else
 	print_error "Unknown argument '$1'.\navailable commands: setup, switch, config, cleanup, remove"
 fi
-
-# systemctl restart display-manager.service
