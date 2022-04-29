@@ -1,0 +1,2 @@
+ACTION=="add", SUBSYSTEM=="thunderbolt", ATTR{authorized}=="1", RUN+="/usr/bin/egpu-switcher switch auto --restart"
+ACTION=="remove", SUBSYSTEM=="thunderbolt", ATTR{authorized}=="1", RUN+="/usr/bin/egpu-switcher switch auto --restart"
