@@ -343,7 +343,7 @@ function setup() {
 function check_restart() {
 	if [ ${restart} = 1 ]; then
 		print_warn "Will restart display-manager..."
-		systemctl restart display-manager.service
+		nohup bash -c "sudo sed -i -e s/AutomaticLoginEnable=False/AutomaticLoginEnable=True/ /etc/gdm/custom.conf ; systemctl restart display-manager.service ; sudo sed -i -e s/AutomaticLoginEnable=True/AutomaticLoginEnable=False/ /etc/gdm/custom.conf" &>/dev/null &
 	fi
 }
 
