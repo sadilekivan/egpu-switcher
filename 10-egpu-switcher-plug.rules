@@ -1,2 +1,2 @@
-ACTION=="add", SUBSYSTEM=="thunderbolt", ATTR{authorized}=="1", RUN+="/usr/bin/egpu-switcher switch auto --restart"
-ACTION=="remove", SUBSYSTEM=="thunderbolt", ATTR{authorized}=="1", RUN+="/usr/bin/egpu-switcher switch auto --restart"
+ACTION=="add", SUBSYSTEM=="thunderbolt", DEVPATH=="/devices/pci0000:00/0000:00:0d.2/domain0/0-0/0-1/0-301", ATTR{authorized}=="1", RUN+="/usr/bin/egpu-switcher switch auto --restart"
+ACTION=="remove", SUBSYSTEM=="thunderbolt", DEVPATH=="/devices/pci0000:00/0000:00:0d.2/domain0/0-0/0-1/0-301", ATTR{authorized}=="1", RUN+="/usr/bin/egpu-switcher switch auto --restart"
